@@ -1,1 +1,1 @@
-export type NextFunction = (err?: string) => void;
+export type NextFunction = (err?: string | null) => void;

@@ -18,6 +18,10 @@
   "homepage": "https://github.com/VeguiDev/electron-weave#readme",
   "dependencies": {
     "electron": "^26.0.0",
+    "parseurl": "^1.3.3",
     "path-to-regexp": "^6.2.1"
+  },
+  "devDependencies": {
+    "@types/parseurl": "^1.3.1"
   }
 }
