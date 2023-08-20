@@ -38,8 +38,8 @@ export default class Route {
     return false;
   }
 
-  private sortLayers() {
-    this.stack.sort((a, b) => {
+  static sortLayers(stack: Layer[]) {
+    stack.sort((a, b) => {
       if (a.isMiddleware() && b.isMiddleware()) {
         return 0;
       } else if (a.isMiddleware() && !b.isMiddleware()) {
@@ -58,8 +58,6 @@ export default class Route {
     this.stack.push(layer);
 
     this.methods[method] = true;
-
-    this.sortLayers();
 
     return this;
   }

@@ -1,5 +1,6 @@
 import { RouteHandler } from "../interfaces/router.interface";
 import { getPathname } from "../util/url.util";
+import Layer from "./Layer.class";
 import Route from "./Route.class";
 
 export default class Router {
@@ -27,7 +28,7 @@ export default class Router {
 
     if (!path) return;
 
-    const routes = this.routes.filter((r) => r instanceof Route) as Route[];
+    let routes = this.routes.filter((r) => r instanceof Route) as Route[];
     const routers = this.routes.filter((r) => r instanceof Router) as Router[];
 
     if (routers.length > 0) {
@@ -36,15 +37,23 @@ export default class Router {
       });
     }
 
-    const route = routes.find((route) => route.handlesPath(path, req.method));
+    routes = routes.filter((route) => route.handlesPath(path, req.method));
 
-    if (!route) return;
+    if (routes.length == 0) return;
+
+    let stack: Layer[] = [];
+
+    for (const route of routes) {
+      stack = [...stack, ...route.stack];
+    }
+
+    Route.sortLayers(stack);
 
     let index = 0;
 
     const next = () => {
-      if (index < route.stack.length) {
-        const layer = route.stack[index];
+      if (index < stack.length) {
+        const layer = stack[index];
 
         index++;
 

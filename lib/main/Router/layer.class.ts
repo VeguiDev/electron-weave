@@ -15,7 +15,7 @@ export default class Layer {
 
     this._isMiddleware = this.handler.length === 3;
 
-    this.regexp = pathToRegexp(path, [], options);
+    this.regexp = pathToRegexp(path == "*" ? "/" : path, [], options);
   }
 
   isMiddleware() {
