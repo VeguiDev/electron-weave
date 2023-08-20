@@ -1,4 +1,4 @@
-import { RouteHandler } from "../interfaces/router.interface";
+import { RouteHandler, RouterDone } from "../interfaces/router.interface";
 import { getPathname } from "../util/url.util";
 import Layer from "./Layer.class";
 import Route from "./Route.class";
@@ -23,7 +23,7 @@ export default class Router {
     return false;
   }
 
-  handleRequest(req: any, res: any) {
+  handleRequest(req: any, res: any, out: RouterDone) {
     const path = getPathname(req);
 
     if (!path) return;
@@ -33,7 +33,7 @@ export default class Router {
 
     if (routers.length > 0) {
       routers.forEach((router) => {
-        router.handleRequest(req, res);
+        router.handleRequest(req, res, out);
       });
     }
 
@@ -50,6 +50,16 @@ export default class Router {
     Route.sortLayers(stack);
 
     let index = 0;
+
+    const send = (body: any) => {
+      delete res.send;
+
+      res.body = body;
+
+      out(req, res);
+    };
+
+    res.send = send;
 
     const next = () => {
       if (index < stack.length) {

@@ -38,6 +38,7 @@ router.get("/", (req, res) => {
   console.log("Route " + req.path + " handled by get!");
   console.log(req);
   console.log(res);
+  res.send("Hello World");
 });
 
 router.post("/", (req, res) => {
@@ -50,6 +51,7 @@ const usersRouter = new Router("/users");
 
 usersRouter.post("/", (req, res) => {
   console.log("Post request to nested router!");
+  res.send("User created!");
 });
 
 usersRouter.use((req, res, next) => {
@@ -64,7 +66,8 @@ router.handleRequest(
     method: "get",
     path: "/",
   },
-  {}
+  {},
+  () => {}
 );
 
 router.handleRequest(
@@ -72,7 +75,10 @@ router.handleRequest(
     method: "post",
     path: "/",
   },
-  {}
+  {},
+  () => {
+    console.log("Request finished");
+  }
 );
 
 router.handleRequest(
@@ -80,5 +86,9 @@ router.handleRequest(
     method: "post",
     path: "/users",
   },
-  {}
+  {},
+  (req, res) => {
+    console.log("Request finished");
+    console.log(req, res);
+  }
 );

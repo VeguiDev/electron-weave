@@ -4,3 +4,4 @@ import { NextFunction } from "./next.interface";
 export type RouteController = (req: any, res: any) => void;
 export type RouteMiddleware = (req: any, res: any, next: NextFunction) => void;
 export type RouteHandler = RouteController | RouteMiddleware;
+export type RouterDone = (req: any, res: any) => void;
