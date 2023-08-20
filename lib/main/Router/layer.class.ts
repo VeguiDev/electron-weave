@@ -1,9 +1,10 @@
 import { pathToRegexp } from "path-to-regexp";
+import { RouteHandler } from "../interfaces/router.interface";
 
 export default class Layer {
   path: string;
   method: string;
-  handler: (...args: any) => any;
+  handler: RouteHandler;
   regexp: RegExp;
 
   private _isMiddleware = false;

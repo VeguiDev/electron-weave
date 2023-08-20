@@ -1,5 +1,7 @@
-import parseurl from "parseurl";
+import Request from "../application/Request.class";
 
-export function getPathname(req: any) {
-  return req.path;
+export function getPathname(req: Request) {
+  const url = new URL(req.url);
+
+  return url.pathname;
 }

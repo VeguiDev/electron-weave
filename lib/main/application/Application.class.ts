@@ -25,7 +25,7 @@ export default class WeaveApplication {
 
       const request = new Request(req.url, req.method, req.data, req.headers);
 
-      const response = new Request(req.url, req.method);
+      const response = new Response(req.url, req.method);
 
       this.router.handleRequest(request, response, (req, res) => {
         e.returnValue = res;

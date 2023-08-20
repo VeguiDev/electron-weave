@@ -1,3 +1,5 @@
+import Request from "../application/Request.class";
+import Response from "../application/Response.class";
 import { RouteHandler, RouterDone } from "../interfaces/router.interface";
 import { getPathname } from "../util/url.util";
 import Layer from "./Layer.class";
@@ -23,7 +25,7 @@ export default class Router {
     return false;
   }
 
-  handleRequest(req: any, res: any, out: RouterDone) {
+  handleRequest(req: Request, res: Response, out: RouterDone) {
     const path = getPathname(req);
 
     if (!path) return;
@@ -52,8 +54,6 @@ export default class Router {
     let index = 0;
 
     const send = (body: any) => {
-      delete res.send;
-
       res.body = body;
 
       out(req, res);

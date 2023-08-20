@@ -1,3 +1,4 @@
+import { RouteHandler } from "../interfaces/router.interface";
 import Layer from "./Layer.class";
 
 export default class Route {
@@ -52,7 +53,7 @@ export default class Route {
     });
   }
 
-  addLayer(method: string, handler: (...args: any) => any, options?: any) {
+  addLayer(method: string, handler: RouteHandler, options?: any) {
     const layer = new Layer(this.path, method, handler, options);
 
     this.stack.push(layer);
