@@ -6,11 +6,20 @@ export default class Layer {
   handler: (...args: any) => any;
   regexp: RegExp;
 
-  constructor(path: string, method: string, handler: any) {
+  private _isMiddleware = false;
+
+  constructor(path: string, method: string, handler: any, options?: any) {
     this.path = path;
     this.method = method;
     this.handler = handler;
-    this.regexp = pathToRegexp(path);
+
+    this._isMiddleware = this.handler.length === 3;
+
+    this.regexp = pathToRegexp(path, [], options);
+  }
+
+  isMiddleware() {
+    return this._isMiddleware;
   }
 
   match(path: string) {

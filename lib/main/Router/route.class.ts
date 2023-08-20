@@ -6,6 +6,10 @@ export default class Route {
   methods: any;
 
   constructor(path: string) {
+    if (path.endsWith("/") && path.length > 1) {
+      path = path.slice(0, -1);
+    }
+
     this.path = path;
     this.methods = {};
   }
@@ -23,21 +27,39 @@ export default class Route {
   handlesPath(path: string, method: string) {
     if (!this.handlesMethod(method)) return false;
 
-    for (const layer of this.stack.filter(
-      (layer) => layer.method.toLowerCase() == method.toLowerCase()
-    )) {
+    const layers = this.stack.filter(
+      (lay) => lay.method === method.toLowerCase() || lay.method == "all"
+    );
+
+    for (const layer of layers) {
       if (layer.match(path)) return true;
     }
 
     return false;
   }
 
-  addLayer(method: string, handler: (...args: any) => any) {
-    const layer = new Layer(this.path, method, handler);
+  private sortLayers() {
+    this.stack.sort((a, b) => {
+      if (a.isMiddleware() && b.isMiddleware()) {
+        return 0;
+      } else if (a.isMiddleware() && !b.isMiddleware()) {
+        return -1;
+      } else if (!a.isMiddleware() && b.isMiddleware()) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }
+
+  addLayer(method: string, handler: (...args: any) => any, options?: any) {
+    const layer = new Layer(this.path, method, handler, options);
 
     this.stack.push(layer);
 
     this.methods[method] = true;
+
+    this.sortLayers();
 
     return this;
   }
