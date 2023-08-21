@@ -2,15 +2,22 @@
   "name": "electron-weave",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "jest .",
-    "debug": " nodemon --inspect ./lib/index.ts"
+    "dev": "nodemon ./lib/index.ts",
+    "dev:linked": "nodemon --watch ./lib --ext .ts --exec \"npm run build\"",
+    "dev:electron": "nodemon --exec 'electron ./lib/index.ts'",
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VeguiDev/electron-weave.git"
   },
+  "files": [
+    "./dist/**/*"
+  ],
   "author": "VeguiDev",
   "license": "ISC",
   "bugs": {

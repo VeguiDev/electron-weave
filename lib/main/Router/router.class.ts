@@ -1,11 +1,15 @@
-import Request from "../application/Request.class";
-import Response from "../application/Response.class";
-import { RouteHandler, RouterDone } from "../interfaces/router.interface";
+import { Request } from "../application/Request.class";
+import { Response } from "../application/Response.class";
+import {
+  RouteHandler,
+  RouteMethodHandler,
+  RouterDone,
+} from "../interfaces/router.interface";
 import { getPathname } from "../util/url.util";
-import Layer from "./Layer.class";
-import Route from "./Route.class";
+import { Layer } from "./Layer.class";
+import { Route } from "./Route.class";
 
-export default class Router {
+export class Router {
   path: string;
   routes: (Route | Router)[] = [];
 
@@ -27,6 +31,8 @@ export default class Router {
 
   handleRequest(req: Request, res: Response, out: RouterDone) {
     const path = getPathname(req);
+
+    console.log("Handling path " + path);
 
     if (!path) return;
 
@@ -61,7 +67,7 @@ export default class Router {
 
     res.send = send;
 
-    const next = () => {
+    const next: () => void = () => {
       if (index < stack.length) {
         const layer = stack[index];
 
@@ -106,25 +112,25 @@ export default class Router {
     this.routes[routeI] = route;
   }
 
-  get(path: string, handler: RouteHandler) {
+  get: RouteMethodHandler = (path, handler) => {
     this.register(path, "get", handler);
-  }
+  };
 
-  post(path: string, handler: RouteHandler) {
+  post: RouteMethodHandler = (path, handler) => {
     this.register(path, "post", handler);
-  }
+  };
 
-  put(path: string, handler: RouteHandler) {
+  put: RouteMethodHandler = (path, handler) => {
     this.register(path, "put", handler);
-  }
+  };
 
-  patch(path: string, handler: RouteHandler) {
+  patch: RouteMethodHandler = (path, handler) => {
     this.register(path, "patch", handler);
-  }
+  };
 
-  delete(path: string, handler: RouteHandler) {
+  delete: RouteMethodHandler = (path: string, handler: RouteHandler) => {
     this.register(path, "delete", handler);
-  }
+  };
 
   use(path: RouteHandler | Router): void;
   use(path: string, handler: RouteHandler | Router): void;

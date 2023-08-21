@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export default class Request {
+export class Request {
   url: string;
   method: string;
   headers: any;
@@ -15,7 +15,16 @@ export default class Request {
     this.headers = headers;
   }
 
-  static getValidationSchema() {
+  static getValidationSchema(from_front: boolean = false) {
+    if (from_front) {
+      return z.object({
+        url: z.string(),
+        method: z.string(),
+        data: z.any().optional(),
+        headers: z.object({}).optional(),
+      });
+    }
+
     return z.object({
       url: z.string().url(),
       method: z.string(),
@@ -25,3 +34,5 @@ export default class Request {
     });
   }
 }
+
+export default Request;

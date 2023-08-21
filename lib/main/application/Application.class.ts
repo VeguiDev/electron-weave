@@ -1,22 +1,22 @@
 import { App, ipcMain } from "electron";
-import Router from "../router/Router.class";
+import { Router } from "../router/Router.class";
 import { MAIN_REQUEST_PIPE } from "../constants";
-import Request from "./Request.class";
-import Response from "./Response.class";
+import { Request } from "./Request.class";
+import { Response } from "./Response.class";
 
-export default class WeaveApplication {
+export class WeaveApplication {
   app: App | null = null;
   private router: Router = new Router();
 
   constructor() {}
 
   useRouter(router: Router) {
-    router.use(router);
+    this.router.use(router);
   }
 
   private attach() {
     ipcMain.on(MAIN_REQUEST_PIPE, (e, req) => {
-      const { success } = Request.getValidationSchema().safeParse(req);
+      const { success } = Request.getValidationSchema(true).safeParse(req);
 
       if (!success) {
         console.debug("Electron Weave: Recieved invalid data!");
@@ -28,7 +28,9 @@ export default class WeaveApplication {
       const response = new Response(req.url, req.method);
 
       this.router.handleRequest(request, response, (req, res) => {
-        e.returnValue = res;
+        console.log(req, res);
+
+        e.returnValue = JSON.stringify(res);
       });
     });
   }

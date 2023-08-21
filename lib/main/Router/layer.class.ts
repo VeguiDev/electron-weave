@@ -1,7 +1,7 @@
 import { pathToRegexp } from "path-to-regexp";
 import { RouteHandler } from "../interfaces/router.interface";
 
-export default class Layer {
+export class Layer {
   path: string;
   method: string;
   handler: RouteHandler;

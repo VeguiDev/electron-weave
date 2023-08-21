@@ -1,7 +1,7 @@
 import { RouteHandler } from "../interfaces/router.interface";
-import Layer from "./Layer.class";
+import { Layer } from "./Layer.class";
 
-export default class Route {
+export class Route {
   path: string;
   stack: Layer[] = [];
   methods: any;

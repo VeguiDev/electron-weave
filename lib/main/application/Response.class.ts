@@ -17,7 +17,7 @@ export class FrontResponse {
   }
 }
 
-export default class Response extends FrontResponse {
+export class Response extends FrontResponse {
   constructor(
     url: string,
     method: string,
@@ -29,3 +29,5 @@ export default class Response extends FrontResponse {
 
   send(body: any) {}
 }
+
+export default Response;
